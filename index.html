@@ -111,8 +111,9 @@
 
         function redirectBasedOnOS() {
             var os = getOS();
+            var modelViewer = document.querySelector("model-viewer");
             if (os === 'iOS' || os === 'Android') {
-                document.querySelector("model-viewer").activateAR();
+                modelViewer.activateAR();
                 document.getElementById('message').style.display = 'none';
             } else {
                 document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
@@ -149,7 +150,7 @@
         <button onclick="handleAllow()">อนุญาต</button>
         <button onclick="handleCancel()">ยกเลิก</button>
     </div>
-    <model-viewer id="ar-viewer" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: block; width: 100%; height: 50vh;"></model-viewer>
+    <model-viewer id="ar-viewer" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="width: 100%; height: 50vh;"></model-viewer>
     <div id="message"></div>
 </body>
 </html>
