@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Quick Look and ARCore Redirect</title>
     <script>
-
         function getOS() {
             var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
 
@@ -19,6 +18,21 @@
                 return 'Android';
             }
 
+            // Windows detection
+            if (/Win(dows )?NT|Win(dows )?9x|Win(dows )?ME|Win(dows )?2000|Win(dows )?XP|Win(dows )?Vista|Win(dows )?7|Win(dows )?8|Win(dows )?10/.test(userAgent)) {
+                return 'Windows';
+            }
+
+            // macOS detection
+            if (/Mac OS X/.test(userAgent) && !/iPad|iPhone|iPod/.test(userAgent)) {
+                return 'macOS';
+            }
+
+            // Linux detection
+            if (/Linux/.test(userAgent)) {
+                return 'Linux';
+            }
+
             return 'unknown';
         }
 
@@ -29,6 +43,8 @@
             } else if (os === 'Android') {
                 document.getElementById('ar-viewer').style.display = 'block';
                 document.getElementById('message').style.display = 'none';
+            } else if (os === 'Windows' || os === 'macOS' || os === 'Linux') {
+                document.getElementById('message').innerText = 'AR experience is currently not supported on this platform.';
             } else {
                 document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
             }
@@ -37,7 +53,7 @@
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body onload="redirectBasedOnOS()">
-
+    <div id="message">Loading AR experience...</div>
     <model-viewer id="ar-viewer" src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: none; width: 100%; height: 100vh;"></model-viewer>
 </body>
 </html>
