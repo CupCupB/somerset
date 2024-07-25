@@ -139,7 +139,18 @@
             document.getElementById('message').style.display = 'flex';
         }
 
-        document.addEventListener("DOMContentLoaded", setModelSource);
+        document.addEventListener("DOMContentLoaded", function() {
+            setModelSource();
+            var modelViewer = document.querySelector("model-viewer");
+            modelViewer.addEventListener('load', function() {
+                console.log('Model loaded successfully');
+            });
+            modelViewer.addEventListener('error', function(event) {
+                console.error('Model failed to load', event);
+                document.getElementById('message').innerText = 'Failed to load the model. Please try again later.';
+                document.getElementById('message').style.display = 'flex';
+            });
+        });
     </script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
