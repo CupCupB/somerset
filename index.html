@@ -101,9 +101,7 @@
 
         function redirectBasedOnOS() {
             var os = getOS();
-            if (os === 'iOS') {
-                window.location.href = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz';
-            } else if (os === 'Android') {
+            if (os === 'iOS' || os === 'Android') {
                 document.querySelector("model-viewer").activateAR();
                 document.getElementById('message').style.display = 'none';
             } else {
@@ -126,7 +124,7 @@
         function handleCancel() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('dialog').style.display = 'none';
-            document.getElementById('message').innerText = 'ทำไมหละ .. เสียใจจัง';
+            document.getElementById('message').innerText = 'ทำไมหละ..เสียใจจัง';
             document.getElementById('message').style.display = 'flex';
         }
     </script>
@@ -139,7 +137,7 @@
         <button onclick="handleAllow()">อนุญาต</button>
         <button onclick="handleCancel()">ยกเลิก</button>
     </div>
-    <model-viewer id="ar-viewer" src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: none; width: 100%; height: 100vh;"></model-viewer>
+    <model-viewer id="ar-viewer" src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: block; width: 100%; height: 50vh;"></model-viewer>
     <div id="message"></div>
 </body>
 </html>
