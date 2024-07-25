@@ -5,45 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Quick Look and Scene Viewer Redirect</title>
     <script>
-        function getOS() {
-            var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-
-            // iOS detection
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return 'iOS';
-            }
-
-            // Android detection
-            if (/android/i.test(userAgent)) {
-                return 'Android';
-            }
-
-            return 'unknown';
-        }
-
-        function redirectBasedOnOS() {
-            var os = getOS();
-            if (os === 'iOS') {
-                window.location.href = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz';
-            } else if (os === 'Android') {
-                window.location.href = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.gltf';
-            } else {
-                document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
-            }
-        }
-    </script>
-</head>
-
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Quick Look and Scene Viewer Redirect</title>
-    <script>
         // ฟังก์ชันตรวจสอบระบบปฏิบัติการ
         function getOS() {
             var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
