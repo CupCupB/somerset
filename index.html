@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Quick Look and ARCore Redirect</title>
     <script>
-
+        // ฟังก์ชันตรวจสอบระบบปฏิบัติการ
         function getOS() {
             var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
 
@@ -22,6 +22,7 @@
             return 'unknown';
         }
 
+        // ฟังก์ชันเปลี่ยนเส้นทางไปยังไฟล์ที่เหมาะสม
         function redirectBasedOnOS() {
             var os = getOS();
             if (os === 'iOS') {
@@ -37,7 +38,10 @@
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body onload="redirectBasedOnOS()">
+    <!-- แสดงข้อความในกรณีที่ระบบปฏิบัติการไม่รองรับ -->
+    <p id="message">Redirecting...</p>
 
+    <!-- ตัวแสดงผล glTF สำหรับ Android -->
     <model-viewer id="ar-viewer" src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: none; width: 100%; height: 100vh;"></model-viewer>
 </body>
 </html>
