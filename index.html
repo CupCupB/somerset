@@ -88,7 +88,7 @@
             if (os === 'iOS') {
                 window.location.href = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz';
             } else if (os === 'Android') {
-                document.getElementById('ar-viewer').style.display = 'block';
+                document.querySelector("model-viewer").activateAR();
                 document.getElementById('message').style.display = 'none';
             } else {
                 document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
