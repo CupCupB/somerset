@@ -112,10 +112,12 @@
                 // Open Scene Viewer on Android
                 const anchor = document.createElement('a');
                 anchor.setAttribute('href', 'intent://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;');
+                document.body.appendChild(anchor);
                 anchor.click();
+                document.body.removeChild(anchor);
                 document.getElementById('message').style.display = 'none';
             } else {
-                document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
+                document.getElementById('message').innerText = 'ระบบปฏิบัติการของคุณไม่รองรับ AR';
                 document.getElementById('message').style.display = 'flex';
             }
         }
