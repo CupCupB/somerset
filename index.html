@@ -113,12 +113,7 @@
             var os = getOS();
             var modelViewer = document.querySelector("model-viewer");
             if (os === 'iOS') {
-                // Open AR Quick Look on iOS
-                const anchor = document.createElement('a');
-                anchor.setAttribute('rel', 'ar');
-                anchor.setAttribute('href', modelViewer.src);
-                anchor.appendChild(document.createElement('img'));
-                anchor.click();
+                modelViewer.activateAR();
                 document.getElementById('message').style.display = 'none';
             } else if (os === 'Android') {
                 modelViewer.activateAR();
