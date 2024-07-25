@@ -65,6 +65,22 @@
             background: rgba(0, 0, 0, 0.7);
             z-index: 500;
         }
+        #message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.8);
+            color: #333;
+            font-size: 18px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
     <script>
         function getOS() {
@@ -92,6 +108,7 @@
                 document.getElementById('message').style.display = 'none';
             } else {
                 document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
+                document.getElementById('message').style.display = 'flex';
             }
         }
 
@@ -109,7 +126,8 @@
         function handleCancel() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('dialog').style.display = 'none';
-            document.getElementById('message').innerText = '3D model viewing was canceled.';
+            document.getElementById('message').innerText = 'ทำไมหละ .. เสียใจจัง';
+            document.getElementById('message').style.display = 'flex';
         }
     </script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
@@ -122,6 +140,6 @@
         <button onclick="handleCancel()">ยกเลิก</button>
     </div>
     <model-viewer id="ar-viewer" src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: none; width: 100%; height: 100vh;"></model-viewer>
-    <div id="message" style="text-align: center; padding: 20px; font-size: 18px;"></div>
+    <div id="message"></div>
 </body>
 </html>
