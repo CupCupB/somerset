@@ -36,15 +36,22 @@
             return 'unknown';
         }
 
+        function supportsAR() {
+            // Checking for WebXR support (basic check)
+            return 'xr' in navigator;
+        }
+
         function redirectBasedOnOS() {
             var os = getOS();
             if (os === 'iOS') {
                 window.location.href = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz';
             } else if (os === 'Android') {
-                document.getElementById('ar-viewer').style.display = 'block';
-                document.getElementById('message').style.display = 'none';
-            } else if (os === 'Windows' || os === 'macOS' || os === 'Linux') {
-                document.getElementById('message').innerText = 'AR experience is currently not supported on this platform.';
+                if (supportsAR()) {
+                    document.getElementById('ar-viewer').style.display = 'block';
+                    document.getElementById('message').style.display = 'none';
+                } else {
+                    window.location.href = 'https://www.google.com/chrome/';
+                }
             } else {
                 document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
             }
