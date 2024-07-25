@@ -101,7 +101,6 @@
 
         function activateAR() {
             var os = getOS();
-            var modelViewer = document.querySelector("model-viewer");
             if (os === 'iOS') {
                 // Open AR Quick Look on iOS
                 const anchor = document.createElement('a');
@@ -110,8 +109,10 @@
                 anchor.click();
                 document.getElementById('message').style.display = 'none';
             } else if (os === 'Android') {
-                modelViewer.src = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb';
-                modelViewer.activateAR();
+                // Open Scene Viewer on Android
+                const anchor = document.createElement('a');
+                anchor.setAttribute('href', 'intent://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;');
+                anchor.click();
                 document.getElementById('message').style.display = 'none';
             } else {
                 document.getElementById('message').innerText = 'Your operating system is not supported for this AR experience.';
@@ -141,7 +142,6 @@
             showPrompt();
         });
     </script>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
     <div id="overlay"></div>
@@ -150,7 +150,6 @@
         <button onclick="handleAllow()">อนุญาต</button>
         <button onclick="handleCancel()">ยกเลิก</button>
     </div>
-    <model-viewer id="ar-viewer" ar ar-modes="scene-viewer quick-look" camera-controls auto-rotate style="width: 100%; height: 50vh;"></model-viewer>
     <div id="message"></div>
 </body>
 </html>
