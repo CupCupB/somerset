@@ -99,6 +99,16 @@
             return 'unknown';
         }
 
+        function setModelSource() {
+            var os = getOS();
+            var modelViewer = document.querySelector("model-viewer");
+            if (os === 'iOS') {
+                modelViewer.src = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz';
+            } else if (os === 'Android') {
+                modelViewer.src = 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.gltf';
+            }
+        }
+
         function redirectBasedOnOS() {
             var os = getOS();
             if (os === 'iOS' || os === 'Android') {
@@ -127,6 +137,8 @@
             document.getElementById('message').innerText = 'ทำไมหละ..เสียใจจัง';
             document.getElementById('message').style.display = 'flex';
         }
+
+        document.addEventListener("DOMContentLoaded", setModelSource);
     </script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
@@ -137,7 +149,7 @@
         <button onclick="handleAllow()">อนุญาต</button>
         <button onclick="handleCancel()">ยกเลิก</button>
     </div>
-    <model-viewer id="ar-viewer" src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: block; width: 100%; height: 50vh;"></model-viewer>
+    <model-viewer id="ar-viewer" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate style="display: block; width: 100%; height: 50vh;"></model-viewer>
     <div id="message"></div>
 </body>
 </html>
