@@ -3,155 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Quick Look and ARCore Redirect</title>
+    <title>3D Model Viewer and AR</title>
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-            overflow: hidden;
-        }
-        #dialog {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #fff;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-        }
-        #dialog p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        #dialog button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        #dialog button:first-of-type {
-            background-color: #4CAF50;
-            color: white;
-        }
-        #dialog button:first-of-type:hover {
-            background-color: #45a049;
-        }
-        #dialog button:last-of-type {
-            background-color: #f44336;
-            color: white;
-        }
-        #dialog button:last-of-type:hover {
-            background-color: #e53935;
-        }
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 500;
+            overflow: hidden; /* ป้องกัน scrollbar ที่ไม่จำเป็น */
         }
-        #message {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
+        model-viewer {
             width: 100%;
             height: 100%;
-            background-color: rgba(240, 240, 240, 0.8);
-            color: #333;
-            font-size: 18px;
-            z-index: 1000;
-            display: none;
+            --ar-button-display: block; /* ทำให้ปุ่ม AR แสดงเสมอ */
         }
     </style>
-    <script>
-        function getOS() {
-            var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-
-            // iOS detection
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return 'iOS';
-            }
-
-            // Android detection
-            if (/android/i.test(userAgent)) {
-                return 'Android';
-            }
-
-            return 'unknown';
-        }
-
-        function activateAR() {
-            var os = getOS();
-            if (os === 'iOS') {
-                // Open AR Quick Look on iOS
-                const anchor = document.createElement('a');
-                anchor.setAttribute('rel', 'ar');
-                anchor.setAttribute('href', 'https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz');
-                anchor.click();
-                document.getElementById('message').style.display = 'none';
-            } else if (os === 'Android') {
-                // Open Scene Viewer on Android
-                const anchor = document.createElement('a');
-                anchor.setAttribute('href', 'intent://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;');
-                document.body.appendChild(anchor);
-                anchor.click();
-                document.body.removeChild(anchor);
-                document.getElementById('message').style.display = 'none';
-            } else {
-                document.getElementById('message').innerText = 'ระบบปฏิบัติการของคุณไม่รองรับ AR';
-                document.getElementById('message').style.display = 'flex';
-            }
-        }
-
-        function showPrompt() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('dialog').style.display = 'block';
-        }
-
-        function handleAllow() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('dialog').style.display = 'none';
-            activateAR();
-        }
-
-        function handleCancel() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('dialog').style.display = 'none';
-            document.getElementById('message').innerText = 'ทำไมหละ..เสียใจจัง';
-            document.getElementById('message').style.display = 'flex';
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            showPrompt();
-        });
-    </script>
 </head>
 <body>
-    <div id="overlay"></div>
-    <div id="dialog">
-        <p>ต้องการเปิด 3D Model หรือไม่</p>
-        <button onclick="handleAllow()">อนุญาต</button>
-        <button onclick="handleCancel()">ยกเลิก</button>
-    </div>
-    <div id="message"></div>
+
+    <model-viewer 
+        src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb"
+        ios-src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz"
+        alt="A 3D model"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        camera-controls
+        auto-rotate>
+    </model-viewer>
+
 </body>
 </html>
