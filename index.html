@@ -1,75 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Model Viewer and AR</title>
-    
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Model Viewer and AR</title>
 
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        model-viewer {
-            width: 100%;
-            height: 100%;
-            /* ซ่อนปุ่ม AR ดั้งเดิมไปเลย */
-            --ar-button-display: none; 
-        }
-        #ar-button {
-            background-color: #fcc022;
-            border-radius: 8px;
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-family: sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-    </style>
+  <!-- model-viewer -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <!-- QR generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body, html {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    model-viewer {
+      width: 100%; height: 100%;
+      --ar-button-display: none;
+    }
+    #ar-button {
+      background-color: #fcc022;
+      border-radius: 8px; border: none; color: white;
+      padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer;
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+    }
+    /* QR code กล่องเล็กที่มุมซ้ายล่าง */
+    #qr-wrapper {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 8px;
+      padding: 8px;
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    }
+    #qrcode {
+      width: 200px;
+      height: 200px;
+    }
+    #qr-text {
+      font-size: 12px;
+      margin-top: 4px;
+      text-align: center;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 
-    <model-viewer 
-        id="ar-viewer"
-        src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.glb"
-        ios-src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/model.usdz"
-        alt="A 3D model"
-        ar
-        ar-modes="webxr scene-viewer quick-look"
-        camera-controls
-        auto-rotate
-        ar-scale="fixed">
-    </model-viewer>
+  <model-viewer 
+    id="ar-viewer"
+    src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/fukuoka.glb"
+    ios-src="https://raw.githubusercontent.com/CupCupB/ar-index-test/main/fukuoka.usdz"
+    alt="A 3D model"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    auto-rotate
+    ar-scale="fixed">
+  </model-viewer>
 
-    <button id="ar-button">
-        วางในพื้นที่ของคุณ
-    </button>
+  <button id="ar-button">วางในพื้นที่ของคุณ</button>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modelViewer = document.getElementById('ar-viewer');
-            const arButton = document.getElementById('ar-button');
+  <!-- QR Code -->
+  <div id="qr-wrapper">
+    <div id="qrcode"></div>
+    <div id="qr-text">สแกนเพื่อเปิด AR</div>
+  </div>
 
-            // เมื่อปุ่มถูกคลิก
-            arButton.addEventListener('click', () => {
-                // ให้สั่ง model-viewer เริ่มโหมด AR
-                modelViewer.activateAR();
-            });
-        });
-    </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modelViewer = document.getElementById('ar-viewer');
+      const arButton = document.getElementById('ar-button');
 
+      // ปุ่มกดเข้า AR
+      arButton.addEventListener('click', () => {
+        modelViewer.activateAR();
+      });
+
+      // Auto-AR เมื่อมี ?startAR=1
+      const params = new URLSearchParams(location.search);
+      if (params.get('startAR') === '1') {
+        setTimeout(() => {
+          modelViewer.activateAR();
+        }, 300);
+      }
+
+      // สร้าง QR เดียว ใช้ fallback URL
+      const fallbackUrl = `${location.origin}${location.pathname}?startAR=1`;
+      new QRCode(document.getElementById("qrcode"), {
+        text: fallbackUrl,
+        width: 200,
+        height: 200,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    });
+  </script>
 </body>
 </html>
