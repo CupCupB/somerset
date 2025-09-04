@@ -46,13 +46,21 @@
     #qr-text {
       font-size: 12px; margin-top: 6px; color: #333;
     }
-    /* อุปกรณ์ที่มีเมาส์แม่นยำ (เดสก์ท็อปส่วนใหญ่) ซ่อนปุ่ม */
+    /* เดสก์ท็อป: โชว์ QR, ซ่อนปุ่ม */
     @media (hover: hover) and (pointer: fine) {
+    #qr-wrapper { display: block; }
     #ar-button { display: none; }
     }
 
-    /* อุปกรณ์ทัช (มือถือ/แท็บเล็ตส่วนใหญ่) โชว์ปุ่ม */
+    /* มือถือ/แท็บเล็ต (อุปกรณ์ทัช): ซ่อน QR, โชว์ปุ่ม */
     @media (hover: none) and (pointer: coarse) {
+    #qr-wrapper { display: none !important; }
+    #ar-button { display: inline-block; }
+    }
+
+    /* กันกรณีจอเล็กทั่วไปด้วย (เผื่อบางเบราว์เซอร์ไม่รองรับ media feature ด้านบน) */
+    @media (max-width: 900px) {
+    #qr-wrapper { display: none !important; }
     #ar-button { display: inline-block; }
     }
   </style>
