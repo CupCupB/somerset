@@ -90,16 +90,13 @@
         setTimeout(() => modelViewer.activateAR(), 300);
       }
 
-      // === QR: ชี้ไปหน้า launcher + ใส่ random param ทุกครั้ง ===
+      // === QR: ชี้ไปหน้า launcher ===
+      // รองรับทั้งกรณีเสิร์ฟจาก GitHub Pages และเปิดจาก path ที่มี index.html
       const basePath = location.pathname.endsWith('index.html')
-      ? location.pathname.replace(/index\.html$/, '')
-      : (location.pathname.endsWith('/') ? location.pathname : location.pathname + '/');
+        ? location.pathname.replace(/index\.html$/, '')
+        : (location.pathname.endsWith('/') ? location.pathname : location.pathname + '/');
 
-      // สุ่ม token หรือใช้ timestamp
-      const randomParam = `t=${Date.now()}_${Math.floor(Math.random()*100000)}`;
-
-      // URL ของ launcher + query param
-      const launcherUrl = `${location.origin}${basePath}launch-ar.html?${randomParam}`;
+      const launcherUrl = `${location.origin}${basePath}launch-ar.html`;
 
       new QRCode(document.getElementById("qrcode"), {
         text: launcherUrl,
