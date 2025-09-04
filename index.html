@@ -46,9 +46,14 @@
     #qr-text {
       font-size: 12px; margin-top: 6px; color: #333;
     }
-    /* ซ่อน QR บนจอเล็ก (มือถือ/แท็บเล็ตแนวตั้ง) */
-    @media (max-width: 900px) {
-      #qr-wrapper { display: none; }
+    /* อุปกรณ์ที่มีเมาส์แม่นยำ (เดสก์ท็อปส่วนใหญ่) ซ่อนปุ่ม */
+    @media (hover: hover) and (pointer: fine) {
+    #ar-button { display: none; }
+    }
+
+    /* อุปกรณ์ทัช (มือถือ/แท็บเล็ตส่วนใหญ่) โชว์ปุ่ม */
+    @media (hover: none) and (pointer: coarse) {
+    #ar-button { display: inline-block; }
     }
   </style>
 </head>
