@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Launching AR…</title>
+  <style>
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
+    .wrap { min-height: 100dvh; display:grid; place-items:center; text-align:center; padding:24px; }
+    .hint { color:#666; font-size:14px; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div>
+      <div>กำลังเปิด AR…</div>
+      <div class="hint">ถ้าไม่เด้งอัตโนมัติ จะพยายามเปิดวิธีสำรองให้</div>
+    </div>
+  </div>
+
+  <script>
+    // ---- แก้เฉพาะ 3 ค่านี้ให้ตรงโปรเจกต์คุณ ----
+    const GLB_URL  = "https://raw.githubusercontent.com/CupCupB/ar-index-test/main/fukuoka.glb";
+    const USDZ_URL = "https://raw.githubusercontent.com/CupCupB/ar-index-test/main/fukuoka.usdz";
+    const TITLE    = "Fukuoka Sofa";
+    // -----------------------------------------------
+
+    // ตรวจ iOS (รวม iPadOS ที่ปลอมเป็น Mac)
+    const ua = navigator.userAgent || "";
+    const platform = navigator.platform || "";
+    const isIOS =
+      /iPhone|iPad|iPod/i.test(ua) ||
+      (platform === "MacIntel" && typeof navigator.maxTouchPoints === "number" && navigator.maxTouchPoints > 1);
+
+    // สร้างลิงก์สำหรับ Android
+    const sceneViewerHTTPS =
+      `https://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(GLB_URL)}&mode=ar_preferred&title=${encodeURIComponent(TITLE)}`;
+
+    const fallbackWeb = `${location.origin}${location.pathname.replace(/launch-ar\.html$/,"")}index.html?startAR=1`;
+
+    const intentURL =
+      "intent://" +
+      sceneViewerHTTPS.replace(/^https?:\/\//, "") +
+      "#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;" +
+      `S.browser_fallback_url=${encodeURIComponent(sceneViewerHTTPS)};end;`;
+
+    (function launch() {
+      if (isIOS) {
+        // iOS → เปิด Quick Look ทันที
+        window.location.replace(USDZ_URL);
+        return;
+      }
+
+      if (/Android/i.test(ua)) {
+        // Android → ใช้ intent:// ให้เด้งเข้า Scene Viewer ทันที
+        // ถ้า environment ไม่รองรับ intent:// จะ fallback เป็นลิงก์ https ของ Scene Viewer
+        const timer = setTimeout(() => {
+          window.location.href = sceneViewerHTTPS;
+        }, 400);
+        window.addEventListener("pagehide", () => clearTimeout(timer));
+        window.location.href = intentURL;
+        return;
+      }
+
+      // อื่น ๆ (เดสก์ท็อป ฯลฯ) → กลับไปหน้า viewer พร้อม auto AR
+      window.location.replace(fallbackWeb);
+    })();
+  </script>
+</body>
+</html>
